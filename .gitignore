@@ -1,11 +1,13 @@
 node_modules/
 *.php
-*.js
 *.py
 *.ps1
 *.zip
 *.pdf
 *.txt
+# Ignore JS files except those in the functions directory
+*.js
+!functions/**/*.js
 scratch/
 browser/
 .vscode/
