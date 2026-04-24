@@ -1,0 +1,15 @@
+node_modules/
+*.php
+*.js
+*.py
+*.ps1
+*.zip
+*.pdf
+*.txt
+scratch/
+browser/
+.vscode/
+.gemini/
+deploy_package/
+package-lock.json
+package.json
