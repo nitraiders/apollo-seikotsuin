@@ -1,0 +1,264 @@
+/* Design System: Apollo Seikotsuin */
+:root {
+    --bg-color: #F9F7F2;
+    --main-green: #00B900;
+    --dark-green: #008f00;
+    --text-color: #333;
+    --font-main: 'Noto Sans JP', sans-serif;
+    --font-accent: 'Outfit', sans-serif;
+    --container-width: 90%;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    /* GPU Acceleration */
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.container {
+    width: var(--container-width);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    background: #fff;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo img {
+    height: 60px;
+    width: auto;
+    display: block;
+}
+
+/* Hero */
+.hero {
+    position: relative;
+    width: 100%;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-content {
+    background: rgba(255,255,255,0.9);
+    padding: 2rem;
+    width: var(--container-width);
+    max-width: 1200px;
+    margin: -50px auto 3rem;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    text-align: center;
+    border-top: 5px solid var(--main-green);
+}
+
+.catchphrase {
+    color: var(--main-green);
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    word-break: keep-all;
+}
+
+/* Menu Section */
+.menu {
+    padding: 3rem 0;
+}
+
+.section-title {
+    font-family: var(--font-accent);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--main-green);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--main-green);
+    margin: 10px auto;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.menu-item {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: var(--transition-smooth);
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.menu-name {
+    font-weight: bold;
+}
+
+.menu-price {
+    font-family: var(--font-accent);
+    color: var(--main-green);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Info Section */
+.info {
+    padding: 3rem 0 8rem;
+}
+
+.info-content {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.info-content dl {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1.5rem;
+}
+
+.info-content dt {
+    background: var(--main-green);
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.85rem;
+    align-self: start;
+}
+
+.info-content dd {
+    font-weight: 500;
+}
+
+/* Footer */
+.footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 2rem 0 6rem;
+    font-size: 0.9rem;
+}
+
+/* Sticky Bar */
+.sticky-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    height: 70px;
+    z-index: 2000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+.sticky-bar a {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: var(--transition-smooth);
+}
+
+.btn-phone {
+    background: #555;
+}
+
+.btn-line {
+    background: #06C755; /* LINE Green */
+}
+
+.sticky-bar a span {
+    position: relative;
+    padding-left: 30px;
+}
+
+.btn-phone span::before {
+    content: '📞';
+    position: absolute;
+    left: 0;
+}
+
+.btn-line span::before {
+    content: '💬';
+    position: absolute;
+    left: 0;
+}
+
+/* Animations & Effects */
+.gpu-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    z-index: -1;
+    will-change: transform;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+    .hero-image img {
+        height: 300px;
+    }
+    .info-content dl {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    .info-content dt {
+        width: 80px;
+    }
+}
