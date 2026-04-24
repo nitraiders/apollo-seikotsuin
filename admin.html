@@ -45,24 +45,42 @@
 </head>
 <body>
     <div class="admin-container">
-        <h1 style="text-align: center; color: #ff9800; margin-bottom: 30px;">お知らせ管理画面</h1>
+        <h1 style="text-align: center; color: #ff9800; margin-bottom: 20px;">管理者ログイン</h1>
         
-        <div class="form-group">
-            <label>管理パスワード</label>
+        <div class="form-group" id="login-section">
+            <label>管理パスワードを入力してください</label>
             <input type="password" id="password" placeholder="パスワードを入力">
+            <button class="save-btn" style="margin-top: 15px;" onclick="checkAuth()">ログイン</button>
         </div>
-        
-        <div class="form-group">
-            <label>お知らせメッセージ内容</label>
-            <textarea id="message" placeholder="トップページに表示するメッセージを入力してください"></textarea>
-        </div>
-        
-        <button class="save-btn" onclick="saveMessage()">内容を更新する</button>
-        
-        <hr style="margin: 40px 0; border: none; border-top: 1px solid #eee;">
-        <h2 style="text-align: center; color: #ff9800; margin-bottom: 20px;">口コミ管理</h2>
-        <div id="reviews-admin-list">
-            <p style="text-align: center; color: #777;">読み込み中...</p>
+
+        <div id="admin-menu" style="display: none;">
+            <div class="form-group">
+                <label>管理メニューを選択</label>
+                <select id="menu-switcher" class="reply-input" style="height: 45px; font-weight: bold; border: 2px solid #ff9800;" onchange="switchMenu()">
+                    <option value="announcement">📢 お知らせメッセージ管理</option>
+                    <option value="reviews">💬 口コミ管理</option>
+                </select>
+            </div>
+
+            <!-- Announcement Section -->
+            <div id="section-announcement">
+                <h2 style="color: #ff9800; margin-bottom: 15px; font-size: 18px;">お知らせメッセージ管理</h2>
+                <div class="form-group">
+                    <label>表示メッセージ</label>
+                    <textarea id="message" placeholder="トップページに表示するメッセージを入力してください"></textarea>
+                </div>
+                <button class="save-btn" onclick="saveMessage()">内容を更新する</button>
+            </div>
+
+            <!-- Reviews Section -->
+            <div id="section-reviews" style="display: none;">
+                <h2 style="color: #ff9800; margin-bottom: 15px; font-size: 18px;">口コミ管理</h2>
+                <div id="reviews-admin-list">
+                    <p style="text-align: center; color: #777;">読み込み中...</p>
+                </div>
+            </div>
+
+            <div id="status-msg" style="margin-top: 20px; text-align: center; padding: 10px; border-radius: 4px;"></div>
         </div>
         
         <a href="/" class="back-link">← サイトトップへ戻る</a>
@@ -73,22 +91,40 @@
         .admin-review-meta { font-size: 12px; color: #888; margin-bottom: 8px; }
         .admin-review-content { margin-bottom: 10px; font-size: 14px; }
         .reply-area { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ddd; }
-        .reply-input { width: 100%; padding: 8px; font-size: 13px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 5px; }
+        .reply-input { width: 100%; padding: 8px; font-size: 13px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 5px; box-sizing: border-box; }
         .btn-group { display: flex; gap: 10px; }
-        .btn-reply { background: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; }
-        .btn-delete { background: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .btn-reply { background: #4CAF50; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .btn-delete { background: #f44336; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .success-feedback { color: #2e7d32; background: #e8f5e9; padding: 10px; border-radius: 4px; margin-bottom: 10px; display: inline-block; font-weight: bold; }
     </style>
 
     <script>
-        // 初期値の読み込み (お知らせ)
-        fetch('/api/message')
-            .then(res => res.json())
-            .then(data => {
-                if (data.message) {
-                    document.getElementById('message').value = data.message;
-                }
-            })
-            .catch(err => console.error('Error loading message:', err));
+        function checkAuth() {
+            const pass = document.getElementById('password').value;
+            if (pass) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('admin-menu').style.display = 'block';
+                loadInitialData();
+            } else {
+                alert('パスワードを入力してください');
+            }
+        }
+
+        function switchMenu() {
+            const val = document.getElementById('menu-switcher').value;
+            document.getElementById('section-announcement').style.display = val === 'announcement' ? 'block' : 'none';
+            document.getElementById('section-reviews').style.display = val === 'reviews' ? 'block' : 'none';
+        }
+
+        function loadInitialData() {
+            // お知らせ
+            fetch('/api/message')
+                .then(res => res.json())
+                .then(data => { if (data.message) document.getElementById('message').value = data.message; });
+            
+            // 口コミ
+            loadAdminReviews();
+        }
 
         // 口コミ一覧の読み込み
         async function loadAdminReviews() {
@@ -103,10 +139,11 @@
                 }
 
                 list.innerHTML = reviews.map(r => `
-                    <div class="admin-review-item">
+                    <div class="admin-review-item" id="item-${r.id}">
                         <div class="admin-review-meta">${r.date} | ${r.nickname}さん (${r.profile}) | ${'★'.repeat(r.stars)}</div>
                         <div class="admin-review-content">${r.comment}</div>
                         <div class="reply-area">
+                            <div id="feedback-${r.id}"></div>
                             <label style="font-size: 12px;">オーナー返信:</label>
                             <textarea id="reply-${r.id}" class="reply-input" placeholder="返信を入力">${r.reply || ''}</textarea>
                             <div class="btn-group">
@@ -117,56 +154,41 @@
                     </div>
                 `).join('');
             } catch (err) {
-                list.innerHTML = '<p style="color: red; text-align: center;">読み込みエラー</p>';
+                list.innerHTML = '<p color="red">読み込みエラー</p>';
             }
         }
 
         async function handleAction(id, action) {
             const password = document.getElementById('password').value;
-            if (!password) {
-                alert('パスワードを入力してください');
-                return;
-            }
-
             let data = { id, action, password };
-            if (action === 'reply') {
-                data.reply = document.getElementById(`reply-${id}`).value;
-            }
-
+            if (action === 'reply') data.reply = document.getElementById(`reply-${id}`).value;
             if (action === 'delete' && !confirm('本当に削除しますか？')) return;
 
             try {
                 const res = await fetch('/api/reviews', {
                     method: 'PATCH',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': password
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': password },
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    alert(action === 'reply' ? '返信を保存しました' : '削除しました');
-                    loadAdminReviews();
+                    if (action === 'reply') {
+                        const fb = document.getElementById(`feedback-${id}`);
+                        fb.innerHTML = '<span class="success-feedback">✅ 保存しました</span>';
+                        setTimeout(() => fb.innerHTML = '', 3000);
+                    } else {
+                        loadAdminReviews();
+                    }
                 } else {
-                    alert('認証エラーまたは処理に失敗しました');
+                    alert('エラーが発生しました。パスワードが正しいか確認してください。');
                 }
-            } catch (err) {
-                alert('通信エラー');
-            }
+            } catch (err) { alert('通信エラー'); }
         }
 
         async function saveMessage() {
             const password = document.getElementById('password').value;
             const message = document.getElementById('message').value;
             const status = document.getElementById('status-msg');
-            
-            if (!password) {
-                status.style.color = 'red';
-                status.textContent = 'パスワードを入力してください';
-                return;
-            }
-
-            status.style.color = '#333';
+            status.style.background = '#eee';
             status.textContent = '更新中...';
 
             try {
@@ -175,22 +197,18 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password, message })
                 });
-                
                 const result = await res.json();
                 if (res.ok) {
+                    status.style.background = '#e8f5e9';
                     status.style.color = 'green';
-                    status.textContent = '更新が完了しました！';
+                    status.textContent = '✅ 更新が完了しました！';
                 } else {
+                    status.style.background = '#ffebee';
                     status.style.color = 'red';
                     status.textContent = result.error || '更新に失敗しました';
                 }
-            } catch (err) {
-                status.style.color = 'red';
-                status.textContent = '通信エラーが発生しました';
-            }
+            } catch (err) { status.textContent = '通信エラー'; }
         }
-
-        loadAdminReviews();
     </script>
 </body>
 </html>

@@ -108,15 +108,20 @@ img {
 .btn-reserve-brand {
     background: linear-gradient(to bottom, #ffb03b, #f39800);
     color: #fff !important;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 15px;
+    padding: 0 15px;
+    height: 50px;
     border-radius: 4px;
     font-weight: bold;
     font-size: 16px;
     box-shadow: 0 4px 0 #c27a00;
     transition: transform 0.1s;
     margin-bottom: 10px;
+    border: none;
+    text-decoration: none;
 }
 
 .btn-reserve-brand:hover {
@@ -127,14 +132,19 @@ img {
 .btn-reserve-net {
     background: linear-gradient(to bottom, #fff100, #ffcc00);
     color: #333 !important;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 15px;
+    padding: 0 15px;
+    height: 50px;
     border-radius: 4px;
     font-weight: bold;
     font-size: 16px;
     box-shadow: 0 4px 0 #b38f00;
     transition: transform 0.1s;
+    border: none;
+    text-decoration: none;
 }
 
 .btn-reserve-net:hover {
@@ -434,11 +444,23 @@ img {
 
 @media (max-width: 960px) {
     :root { --container-width: 100%; }
-    .main-wrap { padding: 20px; margin-top: 0; box-shadow: none; }
+    .main-wrap { padding: 20px; margin-top: 0; box-shadow: none; width: 100%; }
     .mv-container { flex-direction: column; }
     .tabs-nav li { width: 33.33%; }
     .atmosphere-grid { flex-direction: column; }
     .staff-card { flex-direction: column; align-items: center; text-align: center; }
     .staff-photo { margin-bottom: 20px; }
+    .salon-header { flex-direction: column; align-items: flex-start; }
     .salon-actions { width: 100%; margin-top: 20px; }
+    .g-header { padding: 15px 0; }
+    .g-header .inner { width: 100%; padding: 0 20px; }
+    .site-logo { max-width: 200px; }
+}
+
+@media (max-width: 480px) {
+    .salon-name { font-size: 24px; }
+    .catchphrase { font-size: 12px; }
+    .tabs-nav a { font-size: 12px; padding: 10px 0; }
+    .section-title { font-size: 16px; margin: 30px 0 20px 0; }
+    .mv-catch { font-size: 18px; }
 }
