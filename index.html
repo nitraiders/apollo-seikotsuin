@@ -37,29 +37,14 @@
             </ul>
         </nav>
 
-        <!-- Dynamic Message Section -->
-        <div id="dynamic-message" style="margin: 10px 0; padding: 15px; background: #fff5e6; border-left: 5px solid #ff9800; font-weight: bold; border-radius: 4px; display: none;"></div>
-        <script>
-            fetch('/api/message')
-                .then(response => response.json())
-                .then(data => {
-                    const el = document.getElementById('dynamic-message');
-                    if (data.message) {
-                        el.textContent = data.message;
-                        el.style.display = 'block';
-                    }
-                })
-                .catch(err => console.error('Error fetching message:', err));
-        </script>
-        
         <!-- Main Visual 2-Column -->
         <div class="mv-container">
             <div class="mv-left">
                 <img src="images/main_visual.jpg" alt="アポロ整骨院 メインビジュアル" loading="lazy">
             </div>
             <div class="mv-right">
-                <div class="mv-catch">
-                    4月午前空きあります☆ 【完全個室】 【プライベート空間】 【リラックス】 60分3,600円～本格施術が受けられる
+                <div class="mv-catch" id="dynamic-message">
+                    読み込み中...
                 </div>
                 <div class="mv-desc">
                     OLさんや主婦の方に大人気！お買い物ついでに気軽に行けます！首・肩・腰の辛さにお悩みの方にも◎施術後のスッキリ感にヤミツキに♪新しい建物の２階が施術スペース♪清潔感溢れる木目調のお部屋で落ち着いた雰囲気。完全個室で,ゆったりとした気分に☆施術後にハーブティ付き♪全身もみほぐし/足つぼマッサージ/骨盤矯正
@@ -146,5 +131,16 @@
         <p>&copy; アポロ整骨院 公式サイト All Rights Reserved.</p>
     </footer>
 
+    <script>
+        fetch('/api/message')
+            .then(response => response.json())
+            .then(data => {
+                const el = document.getElementById('dynamic-message');
+                if (data.message) {
+                    el.textContent = data.message;
+                }
+            })
+            .catch(err => console.error('Error fetching message:', err));
+    </script>
 </body>
 </html>
