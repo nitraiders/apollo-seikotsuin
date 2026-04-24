@@ -128,35 +128,11 @@
 
         <section style="margin-top: 40px;">
             <h2 class="section-title">お客様からの口コミ</h2>
-            <div class="review-card">
-                <div class="review-header">
-                    <div class="review-user-info">
-                        <i class="fas fa-user-circle"></i> 千春さんさん <span class="review-user-meta">(女性/50代/主婦)</span>
-                    </div>
-                    <div class="review-date">2025/1/11</div>
-                </div>
-                <div class="review-rating-row">
-                    <span class="stars">★★★★★ 5.0</span>
-                    <span>雰囲気 5</span> | <span>接客 5</span> | <span>技術 5</span> | <span>料金 5</span>
-                </div>
-                <div class="review-content">
-                    今回で３回目の施術でした。
-                    いつもありがとうございます…
-                    しっかり学ばれ資格を持った方の施術なので
-                    痛みの原因や改善方法等のアドバイスも
-                    頂けてとても心強く思っております。
-                    その日の体調によって施術はお任せしております。
-                    それだけ信頼しているとも言えます。
-                    これからも定期的に通って心身ともにリラックス
-                    出来たらと思います。
-                    これからも宜しくお願いします。
-                </div>
-                <div class="review-reply">
-                    <div class="reply-title">オーナーからの返信</div>
-                    千春さん様
-                    いつもご利用いただきありがとうございます！
-                    その日の体調によってお身体の辛さは変わってきますので、お話を伺った上でお任せいただき嬉しいです。今後ともよろしくお願いします！
-                </div>
+            <div id="latest-review-container">
+                <p style="text-align: center; padding: 20px;">読み込み中...</p>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="review.html" class="btn-reserve-brand" style="display: inline-block; padding: 10px 30px;">すべての口コミを見る</a>
             </div>
         </section>
     </div>
@@ -166,6 +142,7 @@
     </footer>
 
     <script>
+        // Fetch Announcement Message
         fetch('/api/message')
             .then(response => response.json())
             .then(data => {
@@ -175,6 +152,39 @@
                 }
             })
             .catch(err => console.error('Error fetching message:', err));
+
+        // Fetch Latest Review
+        fetch('/api/reviews')
+            .then(response => response.json())
+            .then(reviews => {
+                const container = document.getElementById('latest-review-container');
+                if (reviews.length > 0) {
+                    const r = reviews[0]; // Latest one
+                    container.innerHTML = `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-user-info">
+                                    <i class="fas fa-user-circle"></i> ${r.nickname}さん <span class="review-user-meta">(${r.profile})</span>
+                                </div>
+                                <div class="review-date">${r.date}</div>
+                            </div>
+                            <div class="review-rating-row">
+                                <span class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)} ${r.stars}.0</span>
+                            </div>
+                            <div class="review-content">${r.comment.replace(/\n/g, '<br>')}</div>
+                            ${r.reply ? `
+                            <div class="review-reply">
+                                <div class="reply-title">オーナーからの返信</div>
+                                ${r.reply.replace(/\n/g, '<br>')}
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = '<p style="text-align: center; padding: 20px;">まだ口コミはありません。</p>';
+                }
+            })
+            .catch(err => console.error('Error fetching reviews:', err));
     </script>
 </body>
 </html>
