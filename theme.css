@@ -99,6 +99,15 @@ img {
     font-size: 32px;
     font-weight: bold;
     color: var(--text-main);
+    line-height: 1.2;
+}
+
+.catch-sub {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--brand-orange);
+    margin-top: 5px;
+    line-height: 1.5;
 }
 
 .salon-actions {
@@ -463,4 +472,186 @@ img {
     .tabs-nav a { font-size: 12px; padding: 10px 0; }
     .section-title { font-size: 16px; margin: 30px 0 20px 0; }
     .mv-catch { font-size: 18px; }
+}
+/* Redesigned Menu Styles */
+.menu-section {
+    margin-bottom: 50px;
+}
+
+.menu-group-title {
+    background-color: #6b8e23;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.menu-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border: 1px solid #6b8e23;
+    border-radius: 4px;
+}
+
+.menu-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    min-width: 500px;
+}
+
+.menu-table th, .menu-table td {
+    border: 1px solid #6b8e23;
+    padding: 12px;
+    text-align: center;
+}
+
+.menu-table th {
+    background-color: #f0f4e8;
+    color: #6b8e23;
+    font-weight: bold;
+}
+
+.menu-table .row-label {
+    background-color: #6b8e23;
+    color: #fff;
+    width: 120px;
+}
+
+.menu-note {
+    font-size: 13px;
+    color: #555;
+    margin-top: 10px;
+    padding-left: 1em;
+    text-indent: -1em;
+}
+
+.self-pay-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.menu-card {
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #6b8e23;
+}
+
+.menu-card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #6b8e23;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.menu-item-row:last-child {
+    border-bottom: none;
+}
+
+.menu-item-name {
+    font-weight: bold;
+}
+
+.menu-item-price {
+    font-weight: bold;
+    color: #e63946;
+    font-size: 18px;
+}
+
+.waterbed-box {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1px solid #bae6fd;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 30px;
+}
+
+.waterbed-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.waterbed-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0369a1;
+}
+
+.waterbed-content {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.waterbed-list {
+    flex: 1;
+}
+
+.waterbed-price-list {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e1e1e1;
+    width: 280px;
+}
+
+.waterbed-price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.waterbed-price-row:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 960px) {
+    .waterbed-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .waterbed-price-list {
+        width: 100%;
+    }
+    .menu-card {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .catch-sub {
+        font-size: 16px;
+    }
 }
