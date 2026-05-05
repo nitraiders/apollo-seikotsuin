@@ -589,8 +589,8 @@ img {
 }
 
 .waterbed-box {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    border: 1px solid #bae6fd;
+    background: linear-gradient(135deg, #fffcf0 0%, #fff9e6 100%);
+    border: 1px solid #ffeeba;
     border-radius: 12px;
     padding: 25px;
     margin-top: 30px;
@@ -606,7 +606,7 @@ img {
 .waterbed-title {
     font-size: 20px;
     font-weight: bold;
-    color: #0369a1;
+    color: var(--brand-orange);
 }
 
 .waterbed-main {
@@ -659,7 +659,7 @@ img {
     font-size: 14px;
     line-height: 1.6;
     color: #333;
-    border: 1px dashed #bae6fd;
+    border: 1px dashed #ffeeba;
 }
 
 @media (max-width: 960px) {
