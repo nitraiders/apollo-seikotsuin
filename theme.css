@@ -751,52 +751,54 @@ img {
 }
 
 .accident-highlight-box .price-zero {
-    font-size: 60px;
+    font-size: 100px;
     color: #e63946;
-    font-weight: bold;
+    font-weight: 900;
     line-height: 1;
-}
-
-.accident-check-section {
-    background-color: #3e8eb3;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 30px;
     display: inline-block;
-    margin: 30px 0 20px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+}
+
+.accident-highlight-box .price-unit {
+    font-size: 50px;
     font-weight: bold;
+    color: #e63946;
+    vertical-align: bottom;
+    margin-left: 5px;
 }
 
-.accident-checklist {
-    list-style: none;
-    padding: 0;
-    text-align: left;
+.btn-close-window {
+    background-color: #666;
+    color: #fff !important;
+    padding: 15px 30px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+    margin-top: 30px;
+    transition: background 0.3s;
 }
 
-.accident-checklist li {
-    padding: 12px 0;
-    border-bottom: 1px dashed #ccc;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
+.btn-close-window:hover {
+    background-color: #444;
 }
 
-.accident-checklist li:last-child {
-    border-bottom: none;
+.text-right {
+    text-align: right;
 }
 
-.accident-checklist i {
-    color: #3e8eb3;
-    margin-top: 4px;
-}
-
-.accident-emphasis {
+.menu-note-accident {
     color: #e63946;
     font-weight: bold;
+    text-decoration: underline;
+    margin-top: 15px;
+    display: block;
 }
 
 @media (max-width: 480px) {
     .accident-main-msg { font-size: 20px; padding: 15px; }
-    .accident-highlight-box .price-zero { font-size: 40px; }
+    .accident-highlight-box .price-zero { font-size: 70px; }
+    .accident-highlight-box .price-unit { font-size: 30px; }
     .accident-list { font-size: 16px; }
 }
