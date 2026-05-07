@@ -107,7 +107,18 @@ img {
     font-weight: bold;
     color: var(--brand-orange);
     margin-top: 5px;
-    line-height: 1.5;
+    line-height: 1.2;
+}
+
+.catch-link {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.catch-link a {
+    color: var(--brand-orange);
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 .salon-actions {
@@ -680,4 +691,112 @@ img {
     .catch-sub {
         font-size: 16px;
     }
+}
+/* Accident Page Styles */
+.accident-box {
+    background-color: #fff9e6;
+    border: 2px solid var(--brand-orange);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.accident-title-group {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.accident-main-msg {
+    background-color: var(--brand-yellow);
+    color: #e63946;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 20px;
+    border-radius: 8px;
+    display: inline-block;
+    box-shadow: 0 4px 0 #d1b900;
+    margin: 20px 0;
+    line-height: 1.4;
+}
+
+.accident-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.accident-list li {
+    margin-bottom: 15px;
+    padding-left: 30px;
+    position: relative;
+}
+
+.accident-list li::before {
+    content: "●";
+    color: var(--brand-orange);
+    position: absolute;
+    left: 0;
+}
+
+.accident-highlight-box {
+    background: #fff;
+    border: 2px solid #e63946;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin: 30px 0;
+}
+
+.accident-highlight-box .price-zero {
+    font-size: 60px;
+    color: #e63946;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.accident-check-section {
+    background-color: #3e8eb3;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 30px;
+    display: inline-block;
+    margin: 30px 0 20px;
+    font-weight: bold;
+}
+
+.accident-checklist {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.accident-checklist li {
+    padding: 12px 0;
+    border-bottom: 1px dashed #ccc;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.accident-checklist li:last-child {
+    border-bottom: none;
+}
+
+.accident-checklist i {
+    color: #3e8eb3;
+    margin-top: 4px;
+}
+
+.accident-emphasis {
+    color: #e63946;
+    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+    .accident-main-msg { font-size: 20px; padding: 15px; }
+    .accident-highlight-box .price-zero { font-size: 40px; }
+    .accident-list { font-size: 16px; }
 }
