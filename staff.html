@@ -49,7 +49,7 @@
                     </div>
                     <div class="staff-details">
                         <div class="staff-name">上野 <small style="font-size: 11px; color: #000; font-weight: normal; vertical-align: middle; margin-left: 5px;">ウエノ</small></div>
-                        <div style="font-size: 13px; color: #777; margin: 5px 0 15px;">柔道整復師（歴9年）</div>
+                        <div id="ueno-exp" style="font-size: 13px; color: #777; margin: 5px 0 15px;">柔道整復師（歴--年）</div>
                         <div style="font-weight: bold; margin-bottom: 10px;">お待ちしております☆</div>
                         <div style="font-size: 14px; color: #555; line-height: 1.7; text-align: center;">
                             お身体のこと何でもお答えします！お気軽にご質問ください。施術の強弱もご希望をお気軽にお申し付けください♪日々のお疲れやストレス解消のお手伝いをさせていただきます！力強く、安心感のある手でお身体を癒します。
@@ -68,5 +68,16 @@
         <p>&copy; アポロ整骨院 公式サイト All Rights Reserved.</p>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentYear = new Date().getFullYear();
+            // 2026年で9年なので、2017年開始と計算 (2026 - 9 = 2017)
+            const expYears = currentYear - 2017;
+            const el = document.getElementById('ueno-exp');
+            if (el) {
+                el.textContent = `柔道整復師（歴${expYears}年）`;
+            }
+        });
+    </script>
 </body>
 </html>
