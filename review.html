@@ -178,10 +178,17 @@
     </style>
 
     <script>
+        const getApiUrl = (path) => {
+            const hostname = window.location.hostname;
+            const isProdPlesk = hostname === 'www.apollo-seikotsuin.jp' || hostname === 'apollo-seikotsuin.jp';
+            return isProdPlesk ? `https://apollo-seikotsuin.pages.dev${path}` : path;
+        };
+
         // Fetch and display reviews
         async function loadReviews() {
             try {
-                const res = await fetch('/api/reviews');
+                const res = await fetch(getApiUrl('/api/reviews'));
+                if (!res.ok) throw new Error('Failed to fetch reviews');
                 const reviews = await res.json();
                 const container = document.getElementById('reviews-container');
                 
@@ -212,6 +219,41 @@
                 `).join('');
             } catch (err) {
                 console.error(err);
+                const container = document.getElementById('reviews-container');
+                container.innerHTML = `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-user-info">
+                                <i class="fas fa-user-circle"></i> 千春さん <span class="review-user-meta">(女性/50代/主婦)</span>
+                            </div>
+                            <div class="review-date">2025/1/11</div>
+                        </div>
+                        <div class="review-rating-row">
+                            <span class="stars">★★★★★ 5.0</span>
+                        </div>
+                        <div class="review-content">今回で3回目の施術でした。<br>いつもありがとうございます…<br>しっかり学ばれ資格を持った方の施術なので痛みの原因や改善方法等のアドバイスも頂けてとても心強く思っております。<br>その日の体調によって施術はお任せしております。<br>それだけ信頼しているとも言えます。<br>これからも定期的に通って心身ともにリラックス出来たらと思います。<br>これからも宜しくお願いします。</div>
+                        <div class="review-reply">
+                            <div class="reply-title">院長からの返信</div>
+                            千春さん様<br>たくさんの整骨院がある中、当整骨院を選んで頂きありがとうございました^_^ <br>いつもご利用いただきありがとうございます！お身体の辛さは日によって変わりますのでお任せいただき嬉しいです。今後ともよろしくお願いします！
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-user-info">
+                                <i class="fas fa-user-circle"></i> あっこさん <span class="review-user-meta">(女性/50代/主婦)</span>
+                            </div>
+                            <div class="review-date">2024/12/10</div>
+                        </div>
+                        <div class="review-rating-row">
+                            <span class="stars">★★★★★ 5.0</span>
+                        </div>
+                        <div class="review-content">首の凝りがひひどくて行きました。<br>全身のマッサージでお願いしましたが、先生の言うとおり首と上半身だけのマッサージでお願いした方がいい気がしました。<br>あっという間の30分でしたがとってもリラックスできました。<br>またよろしくお願いします。</div>
+                        <div class="review-reply">
+                            <div class="reply-title">院長からの返信</div>
+                            あっこさん様、ご来院ありがとうございました！首の凝りが少しでも楽になったのであれば幸いです。またお疲れが溜まる前にぜひメンテナンスにお越しくださいね。
+                        </div>
+                    </div>
+                `;
             }
         }
 
@@ -236,7 +278,7 @@
             };
 
             try {
-                const res = await fetch('/api/reviews', {
+                const res = await fetch(getApiUrl('/api/reviews'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)

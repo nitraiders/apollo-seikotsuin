@@ -21,9 +21,29 @@ const INITIAL_REVIEWS = [
     }
 ];
 
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function onRequestOptions() {
+    return new Response(null, {
+        status: 204,
+        headers: corsHeaders,
+    });
+}
+
 export async function onRequest(context) {
     const { request, env } = context;
     const { MESSAGE_KV } = env;
+
+    if (request.method === 'OPTIONS') {
+        return new Response(null, {
+            status: 204,
+            headers: corsHeaders
+        });
+    }
 
     if (request.method === 'GET') {
         const list = await MESSAGE_KV.list({ prefix: 'review:' });
@@ -34,7 +54,10 @@ export async function onRequest(context) {
                 await MESSAGE_KV.put(r.id, JSON.stringify(r));
             }
             return new Response(JSON.stringify(INITIAL_REVIEWS), {
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 
+                    'Content-Type': 'application/json',
+                    ...corsHeaders
+                }
             });
         }
 
@@ -56,7 +79,10 @@ export async function onRequest(context) {
         });
         
         return new Response(JSON.stringify(reviews), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 
+                'Content-Type': 'application/json',
+                ...corsHeaders
+            }
         });
     }
 
@@ -75,7 +101,10 @@ export async function onRequest(context) {
         };
         await MESSAGE_KV.put(id, JSON.stringify(newReview));
         return new Response(JSON.stringify({ success: true, review: newReview }), {
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 
+                'Content-Type': 'application/json',
+                ...corsHeaders
+            }
         });
     }
 
@@ -86,11 +115,19 @@ export async function onRequest(context) {
         const adminPassword = env.ADMIN_PASSWORD || 'admin123';
 
         if (password !== adminPassword) {
-            return new Response('Unauthorized', { status: 401 });
+            return new Response('Unauthorized', { 
+                status: 401,
+                headers: corsHeaders
+            });
         }
 
         const existing = await MESSAGE_KV.get(body.id);
-        if (!existing) return new Response('Not Found', { status: 404 });
+        if (!existing) {
+            return new Response('Not Found', { 
+                status: 404,
+                headers: corsHeaders
+            });
+        }
 
         const review = JSON.parse(existing);
         if (body.action === 'reply') {
@@ -100,8 +137,17 @@ export async function onRequest(context) {
         }
 
         await MESSAGE_KV.put(body.id, JSON.stringify(review));
-        return new Response(JSON.stringify({ success: true }));
+        return new Response(JSON.stringify({ success: true }), {
+            headers: { 
+                'Content-Type': 'application/json',
+                ...corsHeaders
+            }
+        });
     }
 
-    return new Response('Method Not Allowed', { status: 405 });
+    return new Response('Method Not Allowed', { 
+        status: 405,
+        headers: corsHeaders
+    });
 }
+

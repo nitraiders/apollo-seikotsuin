@@ -222,23 +222,42 @@
     </footer>
 
     <script>
+        const getApiUrl = (path) => {
+            const hostname = window.location.hostname;
+            const isProdPlesk = hostname === 'www.apollo-seikotsuin.jp' || hostname === 'apollo-seikotsuin.jp';
+            return isProdPlesk ? `https://apollo-seikotsuin.pages.dev${path}` : path;
+        };
+
         // Fetch Announcement Message
-        fetch('/api/message')
-            .then(response => response.json())
+        fetch(getApiUrl('/api/message'))
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
             .then(data => {
                 const el = document.getElementById('dynamic-message');
                 if (data.message) {
                     el.textContent = data.message;
+                } else {
+                    el.textContent = '自賠責保険適用で施術費は0円';
                 }
             })
-            .catch(err => console.error('Error fetching message:', err));
+            .catch(err => {
+                console.error('Error fetching message:', err);
+                const el = document.getElementById('dynamic-message');
+                el.textContent = '自賠責保険適用で施術費は0円';
+            });
+
 
         // Fetch Latest Review
-        fetch('/api/reviews')
-            .then(response => response.json())
+        fetch(getApiUrl('/api/reviews'))
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
             .then(reviews => {
                 const container = document.getElementById('latest-review-container');
-                if (reviews.length > 0) {
+                if (reviews && reviews.length > 0) {
                     const r = reviews[0]; // Latest one
                     container.innerHTML = `
                         <div class="review-card">
@@ -264,7 +283,28 @@
                     container.innerHTML = '<p style="text-align: center; padding: 20px;">まだ口コミはありません。</p>';
                 }
             })
-            .catch(err => console.error('Error fetching reviews:', err));
+            .catch(err => {
+                console.error('Error fetching reviews:', err);
+                const container = document.getElementById('latest-review-container');
+                container.innerHTML = `
+                    <div class="review-card" style="border-left: 4px solid #ff9800; background: #fffcf8;">
+                        <div class="review-header">
+                            <div class="review-user-info">
+                                <i class="fas fa-user-circle"></i> 千春さん <span class="review-user-meta">(女性/50代/主婦)</span>
+                            </div>
+                            <div class="review-date">2025/1/11</div>
+                        </div>
+                        <div class="review-rating-row">
+                            <span class="stars">★★★★★ 5.0</span>
+                        </div>
+                        <div class="review-content">資格を持った方の施術なので痛みの原因や改善方法等のアドバイスも頂けてとても心強く思っております。</div>
+                        <div class="review-reply">
+                            <div class="reply-title">院長からの返信</div>
+                            いつもご利用いただきありがとうございます！今後ともよろしくお願いします！
+                        </div>
+                    </div>
+                `; // Static Fallback
+            });
     </script>
 </body>
 </html>

@@ -152,6 +152,11 @@
     </style>
 
     <script>
+        const getApiUrl = (path) => {
+            const hostname = window.location.hostname;
+            const isProdPlesk = hostname === 'www.apollo-seikotsuin.jp' || hostname === 'apollo-seikotsuin.jp';
+            return isProdPlesk ? `https://apollo-seikotsuin.pages.dev${path}` : path;
+        };
         function checkAuth() {
             const pass = document.getElementById('password').value;
             if (pass) {
@@ -171,7 +176,7 @@
 
         function loadInitialData() {
             // お知らせ
-            fetch('/api/message')
+            fetch(getApiUrl('/api/message'))
                 .then(res => res.json())
                 .then(data => { if (data.message) document.getElementById('message').value = data.message; });
             
@@ -183,7 +188,8 @@
         async function loadAdminReviews() {
             const list = document.getElementById('reviews-admin-list');
             try {
-                const res = await fetch('/api/reviews');
+                const res = await fetch(getApiUrl('/api/reviews'));
+                if (!res.ok) throw new Error('Failed to fetch reviews');
                 const reviews = await res.json();
                 
                 if (reviews.length === 0) {
@@ -218,7 +224,7 @@
             if (action === 'delete' && !confirm('本当に削除しますか？')) return;
 
             try {
-                const res = await fetch('/api/reviews', {
+                const res = await fetch(getApiUrl('/api/reviews'), {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json', 'Authorization': password },
                     body: JSON.stringify(data)
@@ -245,7 +251,7 @@
             status.textContent = '更新中...';
 
             try {
-                const res = await fetch('/api/message', {
+                const res = await fetch(getApiUrl('/api/message'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password, message })
