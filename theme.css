@@ -122,26 +122,32 @@ img {
 }
 
 .salon-actions {
-    width: 300px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .btn-reserve-brand {
     background: linear-gradient(to bottom, #ffb03b, #f39800);
     color: #fff !important;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 15px;
-    height: 50px;
+    padding: 6px 12px;
+    min-height: 46px;
     border-radius: 4px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.2;
     box-shadow: 0 4px 0 #c27a00;
     transition: transform 0.1s;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     border: none;
     text-decoration: none;
+    box-sizing: border-box;
 }
 
 .btn-reserve-brand:hover {
@@ -153,23 +159,34 @@ img {
     background: linear-gradient(to bottom, #fff100, #ffcc00);
     color: #333 !important;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 15px;
-    height: 50px;
+    padding: 6px 12px;
+    min-height: 46px;
     border-radius: 4px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.2;
     box-shadow: 0 4px 0 #b38f00;
     transition: transform 0.1s;
     border: none;
     text-decoration: none;
+    box-sizing: border-box;
 }
 
 .btn-reserve-net:hover {
     transform: translateY(2px);
     box-shadow: 0 2px 0 #b38f00;
+}
+
+.sub-text {
+    font-size: 11px;
+    font-weight: normal;
+    display: block;
+    margin-top: 2px;
+    opacity: 0.9;
 }
 
 /* Tabs Navigation */
@@ -475,6 +492,10 @@ img {
     .g-header { padding: 15px 0; }
     .g-header .inner { width: 100%; padding: 0 20px; }
     .site-logo { max-width: 200px; }
+@media (max-width: 600px) {
+    .btns-flex {
+        flex-direction: column !important;
+    }
 }
 
 @media (max-width: 480px) {
