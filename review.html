@@ -178,16 +178,12 @@
     </style>
 
     <script>
-        const getApiUrl = (path) => {
-            const hostname = window.location.hostname;
-            const isProdPlesk = hostname === 'www.apollo-seikotsuin.jp' || hostname === 'apollo-seikotsuin.jp';
-            return isProdPlesk ? `https://apollo-seikotsuin.pages.dev${path}` : path;
-        };
+        const getApiUrl = (path) => `https://apollo-seikotsuin.pages.dev${path}`;
 
         // Fetch and display reviews
         async function loadReviews() {
             try {
-                const res = await fetch(getApiUrl('/api/reviews'));
+                const res = await fetch(getApiUrl(`/api/reviews?t=${Date.now()}`), { cache: 'no-store' });
                 if (!res.ok) throw new Error('Failed to fetch reviews');
                 const reviews = await res.json();
                 const container = document.getElementById('reviews-container');

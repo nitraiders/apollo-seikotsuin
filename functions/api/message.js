@@ -2,6 +2,7 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Cache-Control": "no-cache, no-store, must-revalidate",
 };
 
 export async function onRequestOptions() {
@@ -12,35 +13,56 @@ export async function onRequestOptions() {
 }
 
 export async function onRequestGet(context) {
-  const value = await context.env.MESSAGE_KV.get("announcement");
-  return new Response(JSON.stringify({ message: value || "" }), {
-    headers: {
-      "Content-Type": "application/json",
-      ...corsHeaders,
-    },
-  });
-}
-
-export async function onRequestPost(context) {
-  const { password, message } = await context.request.json();
-  const adminPassword = context.env.ADMIN_PASSWORD || "admin123";
-
-  if (password !== adminPassword) {
-    return new Response(JSON.stringify({ error: "パスワードが正しくありません" }), {
-      status: 403,
+  try {
+    const value = await context.env.MESSAGE_KV.get("announcement");
+    return new Response(JSON.stringify({ message: value || "" }), {
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      },
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ message: "", error: err.message }), {
+      status: 500,
       headers: {
         "Content-Type": "application/json",
         ...corsHeaders,
       },
     });
   }
-
-  await context.env.MESSAGE_KV.put("announcement", message);
-  return new Response(JSON.stringify({ success: true }), {
-    headers: {
-      "Content-Type": "application/json",
-      ...corsHeaders,
-    },
-  });
 }
+
+export async function onRequestPost(context) {
+  try {
+    const { password, message } = await context.request.json();
+    const adminPassword = context.env.ADMIN_PASSWORD || "admin123";
+
+    if (password !== adminPassword) {
+      return new Response(JSON.stringify({ error: "パスワードが正しくありません" }), {
+        status: 403,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders,
+        },
+      });
+    }
+
+    await context.env.MESSAGE_KV.put("announcement", message);
+    return new Response(JSON.stringify({ success: true, message }), {
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      },
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      },
+    });
+  }
+}
+
 

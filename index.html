@@ -222,21 +222,20 @@
     </footer>
 
     <script>
-        const getApiUrl = (path) => {
-            const hostname = window.location.hostname;
-            const isProdPlesk = hostname === 'www.apollo-seikotsuin.jp' || hostname === 'apollo-seikotsuin.jp';
-            return isProdPlesk ? `https://apollo-seikotsuin.pages.dev${path}` : path;
-        };
+        const getApiUrl = (path) => `https://apollo-seikotsuin.pages.dev${path}`;
 
         // Fetch Announcement Message
-        fetch(getApiUrl('/api/message'))
+        fetch(getApiUrl(`/api/message?t=${Date.now()}`), {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+        })
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok');
                 return response.json();
             })
             .then(data => {
                 const el = document.getElementById('dynamic-message');
-                if (data.message) {
+                if (data && data.message) {
                     el.textContent = data.message;
                 } else {
                     el.textContent = '自賠責保険適用で施術費は0円';
@@ -245,12 +244,15 @@
             .catch(err => {
                 console.error('Error fetching message:', err);
                 const el = document.getElementById('dynamic-message');
-                el.textContent = '自賠責保険適用で施術費は0円';
+                if (el) el.textContent = '自賠責保険適用で施術費は0円';
             });
 
 
         // Fetch Latest Review
-        fetch(getApiUrl('/api/reviews'))
+        fetch(getApiUrl(`/api/reviews?t=${Date.now()}`), {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+        })
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok');
                 return response.json();
