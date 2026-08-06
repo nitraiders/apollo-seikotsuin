@@ -811,13 +811,20 @@ img {
     text-align: right;
 }
 
-.menu-note-accident {
-    color: #e63946;
+.google-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background-color: #4285f4;
+    color: #ffffff;
+    font-size: 11px;
     font-weight: bold;
-    text-decoration: underline;
-    margin-top: 15px;
-    display: block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+    vertical-align: middle;
 }
+
 
 @media (max-width: 480px) {
     .accident-main-msg { font-size: 20px; padding: 15px; }
