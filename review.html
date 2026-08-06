@@ -181,77 +181,77 @@
     <script>
         const getApiUrl = (path) => `https://apollo-seikotsuin.pages.dev${path}`;
 
-        const staticAndGoogleReviews = [
-            {
-                nickname: "千春",
-                profile: "女性/50代/主婦",
-                stars: 5,
-                date: "2025/1/11",
-                comment: "今回で3回目の施術でした。\nいつもありがとうございます…\nしっかり学ばれ資格を持った方の施術なので痛みの原因や改善方法等のアドバイスも頂けてとても心強く思っております。\nその日の体調によって施術はお任せしております。\nそれだけ信頼しているとも言えます。\nこれからも定期的に通って心身ともにリラックス出来たらと思います。\nこれからも宜しくお願いします。",
-                reply: "千春さん様\nたくさんの整骨院がある中、当整骨院を選んで頂きありがとうございました^_^\nいつもご利用いただきありがとうございます！お身体の辛さは日によって変わりますのでお任せいただき嬉しいです。今後ともよろしくお願いします！",
-                source: "site"
-            },
-            {
-                nickname: "あっこ",
-                profile: "女性/50代/主婦",
-                stars: 5,
-                date: "2024/12/10",
-                comment: "首の凝りがひひどくて行きました。\n全身のマッサージでお願いしましたが、先生の言うとおり首と上半身だけのマッサージでお願いした方がいい気がしました。\nあっという間の30分でしたがとってもリラックスできました。\nまたよろしくお願いします。",
-                reply: "あっこさん様、ご来院ありがとうございました！首の凝りが少しでも楽になったのであれば幸いです。またお疲れが溜まる前にぜひメンテナンスにお越しくださいね。",
-                source: "site"
-            }
-        ];
-
-        // Fetch and display reviews (Unified & Date Sorted)
+        // Fetch and display reviews
         async function loadReviews() {
-            const container = document.getElementById('reviews-container');
-            let dynamicReviews = [];
-
             try {
                 const res = await fetch(getApiUrl(`/api/reviews?t=${Date.now()}`), { cache: 'no-store' });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (Array.isArray(data)) dynamicReviews = data;
+                if (!res.ok) throw new Error('Failed to fetch reviews');
+                const reviews = await res.json();
+                const container = document.getElementById('reviews-container');
+                
+                if (reviews.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; padding: 20px;">まだ口コミはありません。</p>';
+                    return;
                 }
-            } catch (err) {
-                console.warn('動的口コミ取得エラー（静的データのみ表示します）:', err);
-            }
 
-            const allReviews = [...dynamicReviews, ...staticAndGoogleReviews];
-
-            allReviews.sort((a, b) => {
-                const dateA = new Date(a.date ? a.date.replace(/\//g, '-') : 0);
-                const dateB = new Date(b.date ? b.date.replace(/\//g, '-') : 0);
-                return dateB - dateA;
-            });
-
-            if (allReviews.length === 0) {
-                container.innerHTML = '<p style="text-align: center; padding: 20px;">まだ口コミはありません。</p>';
-                return;
-            }
-
-            container.innerHTML = allReviews.map(r => `
-                <div class="review-card ${r.source === 'google' ? 'google-review' : ''}">
-                    <div class="review-header">
-                        <div class="review-user-info">
-                            <i class="fas fa-user-circle"></i> ${r.nickname}さん 
-                            <span class="review-user-meta">(${r.profile || '投稿者'})</span>
-                            ${r.source === 'google' ? '<span class="google-badge"><i class="fab fa-google"></i> Google口コミ</span>' : ''}
+                container.innerHTML = reviews.map(r => `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-user-info">
+                                <i class="fas fa-user-circle"></i> ${r.nickname}さん <span class="review-user-meta">(${r.profile})</span>
+                            </div>
+                            <div class="review-date">${r.date}</div>
                         </div>
-                        <div class="review-date">${r.date || ''}</div>
+                        <div class="review-rating-row">
+                            <span class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)} ${r.stars}.0</span>
+                        </div>
+                        <div class="review-content">${r.comment.replace(/\n/g, '<br>')}</div>
+                        ${r.reply ? `
+                        <div class="review-reply">
+                            <div class="reply-title">院長からの返信</div>
+                            ${r.reply.replace(/\n/g, '<br>')}
+                        </div>
+                        ` : ''}
                     </div>
-                    <div class="review-rating-row">
-                        <span class="stars">${'★'.repeat(r.stars || 5)}${'☆'.repeat(5 - (r.stars || 5))} ${(r.stars || 5)}.0</span>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+                const container = document.getElementById('reviews-container');
+                container.innerHTML = `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-user-info">
+                                <i class="fas fa-user-circle"></i> 千春さん <span class="review-user-meta">(女性/50代/主婦)</span>
+                            </div>
+                            <div class="review-date">2025/1/11</div>
+                        </div>
+                        <div class="review-rating-row">
+                            <span class="stars">★★★★★ 5.0</span>
+                        </div>
+                        <div class="review-content">今回で3回目の施術でした。<br>いつもありがとうございます…<br>しっかり学ばれ資格を持った方の施術なので痛みの原因や改善方法等のアドバイスも頂けてとても心強く思っております。<br>その日の体調によって施術はお任せしております。<br>それだけ信頼しているとも言えます。<br>これからも定期的に通って心身ともにリラックス出来たらと思います。<br>これからも宜しくお願いします。</div>
+                        <div class="review-reply">
+                            <div class="reply-title">院長からの返信</div>
+                            千春さん様<br>たくさんの整骨院がある中、当整骨院を選んで頂きありがとうございました^_^ <br>いつもご利用いただきありがとうございます！お身体の辛さは日によって変わりますのでお任せいただき嬉しいです。今後ともよろしくお願いします！
+                        </div>
                     </div>
-                    <div class="review-content">${(r.comment || '').replace(/\n/g, '<br>')}</div>
-                    ${r.reply ? `
-                    <div class="review-reply">
-                        <div class="reply-title">院長からの返信</div>
-                        ${r.reply.replace(/\n/g, '<br>')}
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-user-info">
+                                <i class="fas fa-user-circle"></i> あっこさん <span class="review-user-meta">(女性/50代/主婦)</span>
+                            </div>
+                            <div class="review-date">2024/12/10</div>
+                        </div>
+                        <div class="review-rating-row">
+                            <span class="stars">★★★★★ 5.0</span>
+                        </div>
+                        <div class="review-content">首の凝りがひひどくて行きました。<br>全身のマッサージでお願いしましたが、先生の言うとおり首と上半身だけのマッサージでお願いした方がいい気がしました。<br>あっという間の30分でしたがとってもリラックスできました。<br>またよろしくお願いします。</div>
+                        <div class="review-reply">
+                            <div class="reply-title">院長からの返信</div>
+                            あっこさん様、ご来院ありがとうございました！首の凝りが少しでも楽になったのであれば幸いです。またお疲れが溜まる前にぜひメンテナンスにお越しくださいね。
+                        </div>
                     </div>
-                    ` : ''}
-                </div>
-            `).join('');
+                `;
+            }
         }
 
         // Modal Logic
