@@ -93,10 +93,8 @@
             </ul>
         </nav>
 
-        <!-- Google評価の概要 セクション -->
-        <section style="margin-bottom: 40px;">
-            <h2 class="section-title">Googleに投稿された口コミ</h2>
-            
+        <!-- 1. Google評価の概要 -->
+        <section style="margin-bottom: 30px;">
             <div class="google-review-summary-box">
                 <div class="google-summary-main">
                     <div class="google-badge-row">
@@ -110,6 +108,23 @@
                     <div class="google-subtext">Googleに投稿された口コミの一部を、2026年8月6日時点の表示内容をもとに掲載しています。</div>
                 </div>
             </div>
+        </section>
+
+        <!-- 2. サイトへ投稿された口コミ セクション（既存復元） -->
+        <section style="margin-bottom: 50px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 class="section-title" style="margin-bottom: 0; margin-top: 0;">サイトへ投稿された口コミ</h2>
+                <button id="openModal" class="btn-reserve-brand" style="font-size: 14px; padding: 10px 20px; margin: 0; border: none; cursor: pointer; height: auto; line-height: 1;">口コミを投稿する</button>
+            </div>
+            
+            <div id="reviews-container">
+                <p style="text-align: center; padding: 20px;">読み込み中...</p>
+            </div>
+        </section>
+
+        <!-- 3. 「Googleに投稿された口コミ」の見出し & 4. Google口コミ8件 -->
+        <section style="margin-bottom: 40px;">
+            <h2 class="section-title">Googleに投稿された口コミ</h2>
             
             <div id="google-reviews-container">
                 <!-- 1) a a様 -->
@@ -242,18 +257,6 @@
                     </div>
                     <div class="review-content">優しく丁寧にやって頂きました♪</div>
                 </div>
-            </div>
-        </section>
-
-        <!-- サイトへ投稿された口コミ セクション（既存復元） -->
-        <section style="margin-top: 50px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <h2 class="section-title" style="margin-bottom: 0; margin-top: 0;">サイトへ投稿された口コミ</h2>
-                <button id="openModal" class="btn-reserve-brand" style="font-size: 14px; padding: 10px 20px; margin: 0; border: none; cursor: pointer; height: auto; line-height: 1;">口コミを投稿する</button>
-            </div>
-            
-            <div id="reviews-container">
-                <p style="text-align: center; padding: 20px;">読み込み中...</p>
             </div>
         </section>
     </div>
