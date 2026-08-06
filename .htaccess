@@ -1,0 +1,7 @@
+# Force UTF-8 Encoding for Plesk Apache/Nginx
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .html .css .js .json .php
+
+<IfModule mod_headers.c>
+    Header set Content-Type "text/html; charset=UTF-8"
+</IfModule>
